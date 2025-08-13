@@ -127,20 +127,23 @@ nano ~/.config/systemd/user/nextory.service
 
 Paste this file same given below:
 
+                [Unit]
+                Description=Nextory Automated GitHub Commit Tool
+                After=network-online.target
+                Wants=network-online.target
 
-            [Unit]
-            Description=Nextory Auto Commit Agent
-            After=network.target
+                [Service]
+                ExecStart=/home/hassan/separate_folder/Nextory/venv/bin/python /home/hassan/separate_folder/Nextory/main.py
+                WorkingDirectory=/home/hassan/separate_folder/Nextory
+                Restart=always
+                RestartSec=5
+                User=hassan
+                Environment=PYTHONUNBUFFERED=1
+                ExecStartPre=/bin/sleep 15
 
-            [Service]
-            ExecStart=/usr/bin/env python3 /home/hassan/separate_folder/Nextory/main.py
-            WorkingDirectory=/home/hassan/separate_folder/Nextory
-            Restart=always
-            User=hassan
-            Environment=PYTHONUNBUFFERED=1
+                [Install]
+                WantedBy=multi-user.target
 
-            [Install]
-            WantedBy=default.target 
 
 
 ⚠ Replace /home/hassan/separate_folder/Nextory with your actual folder path.
