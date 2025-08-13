@@ -36,89 +36,79 @@ When you run `main.py`, a GUI popup will:
 ### 1️⃣ Install Python
 Requires **Python 3.8+**.  
 Check your version:
-```bash
-python3 --version
-2️⃣ Install Dependencies
 bash
-Copy
-Edit
-pip install -r requirements.txt
+python3 --version
+
+
+2️⃣ Install Dependencies
+
+        pip install -r requirements.txt
+
+
 For Linux:
 
-bash
-Copy
-Edit
-sudo apt install python3-tk
-tkinter is required for the GUI prompts.
+
+        sudo apt install python3-tk
+    (tkinter is required for the GUI prompts.)
+
 
 3️⃣ Generate a GitHub Personal Access Token (Classic)
-⚠ Use a classic token, not a fine-grained token.
+    ⚠ Use a classic token, not a fine-grained token.
 
 Steps:
 
-Go to GitHub → Settings → Developer settings
+1- Go to GitHub → Settings → Developer settings
 
-Navigate to Personal access tokens → Tokens (classic)
+2- Navigate to Personal access tokens → Tokens (classic)
 
-Click Generate new token (classic)
+3- Click Generate new token (classic)
 
-Name it (e.g., Nextory Commit Agent)
+3- Name it (e.g., Nextory Commit Agent)
 
-Set expiration (e.g., 90 days, 1 year)
+4- Set expiration (e.g., 90 days, 1 year)
 
-Under Select scopes, check:
+5- Under Select scopes, check:
+    repo ✅ (full control of private repositories, including creation)
 
-repo ✅ (full control of private repositories, including creation)
+6- Click Generate token
 
-Click Generate token
+7- Copy the token immediately — GitHub won’t show it again
 
-Copy the token immediately — GitHub won’t show it again
 
 ▶️ Run Nextory
-bash
-Copy
-Edit
-python main.py
+
+    python main.py
+
 When prompted:
 
-Paste your GitHub token
+1- Paste your GitHub token
 
-Enter repository name (e.g., MyRepo or username/MyRepo)
+2- Enter repository name (e.g., MyRepo or username/MyRepo)
 
-Enter branch name (default: main)
+3- Enter branch name (default: main)
 
-Enter commits/day (default: 3)
+4- Enter commits/day (default: 3)
 
-Click OK — setup complete
+5- Click OK — setup complete
+
 
 🐞 Troubleshooting
 Wrong Token or Repository Name?
 Edit the config file:
 
 Linux/Mac:
+* nano ~/.nextory_agent/config.json *
 
-bash
-Copy
-Edit
-nano ~/.nextory_agent/config.json
 Windows:
-
-arduino
-Copy
-Edit
 C:\Users\<YourUser>\.nextory_agent\config.json
+
 Remove:
 
-json
-Copy
-Edit
 "token": "your-old-token",
 "repository": "old-repo-name"
 Save & rerun:
 
-bash
-Copy
-Edit
+
 python main.py
 Commits Not Appearing?
 Check GitHub → Commits tab in your repository
@@ -127,97 +117,91 @@ Ensure the script is still running — closing the terminal stops it
 
 If using an expiring token, ensure it’s still valid
 
-🐧 Linux – systemd User Service (Ubuntu Run at Startup)
+-------------------------------------------------------------------------------------------------
+
+==================  🐧 Linux – systemd User Service (Ubuntu Run at Startup)  ==================
+
 1️⃣ Create the service file
-bash
-Copy
-Edit
+
 nano ~/.config/systemd/user/nextory.service
-Paste:
 
-ini
-Copy
-Edit
-[Unit]
-Description=Nextory Auto Commit Agent
-After=network.target
+Paste this file same given below:
 
-[Service]
-ExecStart=/usr/bin/env python3 /home/hassan/separate_folder/Nextory/main.py
-WorkingDirectory=/home/hassan/separate_folder/Nextory
-Restart=always
-User=hassan
-Environment=PYTHONUNBUFFERED=1
 
-[Install]
-WantedBy=default.target
+            [Unit]
+            Description=Nextory Auto Commit Agent
+            After=network.target
+
+            [Service]
+            ExecStart=/usr/bin/env python3 /home/hassan/separate_folder/Nextory/main.py
+            WorkingDirectory=/home/hassan/separate_folder/Nextory
+            Restart=always
+            User=hassan
+            Environment=PYTHONUNBUFFERED=1
+
+            [Install]
+            WantedBy=default.target 
+
+
 ⚠ Replace /home/hassan/separate_folder/Nextory with your actual folder path.
 User=hassan should match your Linux username.
 
-2️⃣ Enable and Start the Service
-bash
-Copy
-Edit
-systemctl --user enable nextory
-systemctl --user start nextory
-3️⃣ Check Service Status
-bash
-Copy
-Edit
-systemctl --user status nextory
-4️⃣ View Live Logs
-bash
-Copy
-Edit
-journalctl --user -u nextory -f
+
+2️⃣ Enable and start the service
+    systemctl --user enable nextory
+    systemctl --user start nextory
+
+3️⃣ Check service status
+    systemctl --user status nextory
+
+This shows whether the service is running and any recent logs.
+
+4️⃣ View live logs
+    journalctl --user -u nextory -f
+
 Press Ctrl + C to exit.
 
-5️⃣ Stop or Restart the Service
-bash
-Copy
-Edit
-systemctl --user stop nextory
-systemctl --user restart nextory
-🪟 Windows – Run at Startup
-1️⃣ Create a .bat File
+5️⃣ Stop or restart the service
+    systemctl --user stop nextory
+    systemctl --user restart nextory
+
+
+===========================  🪟 Windows – Run at Startup  ===========================
+
+1️⃣ Create a .bat file
 Open Notepad and paste:
 
-bat
-Copy
-Edit
-@echo off
-cd /d "C:\path\to\Nextory"
-python main.py
-Save as:
 
-makefile
-Copy
-Edit
-C:\Nextory\start_nextory.bat
+       * @echo off
+        cd /d "C:\path\to\Nextory"
+        python main.py *
+
+Save it as:
+    C:\Nextory\start_nextory.bat
 Replace C:\path\to\Nextory with your actual folder path.
 
 2️⃣ Open Task Scheduler
+
 Press Windows + R, type:
 
-Copy
-Edit
-taskschd.msc
+    taskschd.msc 
 Press Enter.
 
-3️⃣ Create a New Task
-Name: Nextory Auto Commit Agent
+3️⃣ Create a new task
+Click Create Task (not "Basic Task").
 
-Check Run whether user is logged on or not
+Name: Nextory Auto Commit Agent.
 
-Go to Triggers → New → At log on
+Check Run whether user is logged on or not.
+
+Go to Triggers → New → "At log on".
 
 Go to Actions → New → Program/script:
 
-makefile
-Copy
-Edit
-C:\Nextory\start_nextory.bat
-4️⃣ Allow Running Even When Closed
+
+    C:\Nextory\start_nextory.bat
+
+4️⃣ Allow running even when closed
 In Settings tab, check:
 
 ✅ Allow task to be run on demand
@@ -226,23 +210,28 @@ In Settings tab, check:
 
 ✅ If the task fails, restart every: 1 minute, Attempt: 3 times
 
-5️⃣ Check If Running & View Logs
-Add to your .bat file before python main.py:
+5️⃣ Check if running & view logs
+In Task Scheduler → Task Status, see if it says "Running".
 
-bat
-Copy
-Edit
-echo Starting Nextory at %date% %time% >> nextory_log.txt
-python main.py >> nextory_log.txt 2>&1
-This logs all output to nextory_log.txt in your folder.
+To see logs, add this to your .bat file before python main.py:
 
-👨‍💻 Developed By
-Hassan Ali
 
-🎯 Presented To
-Team Nextash
-🚀 Innovative automation & productivity solutions
-📧 Developer Contact: hassan4185767@gmail.com
-📧 Team Contact: support@nextash.com
-🌐 Website: https://nextash.com
+    echo Starting Nextory at %date% %time% >> nextory_log.txt
+    python main.py >> nextory_log.txt 2>&1
 
+This will log all output to nextory_log.txt in your folder.
+
+
+
+
+---
+
+## 👨‍💻 Developed By
+**Hassan Ali**
+
+## 🎯 Presented To
+**Team Nextash**  
+🚀 Innovative automation & productivity solutions  
+📧 Developer Contact: hassan4185767@gmail.com  
+📧 Team Contact: support@nextash.com  
+🌐 Website: [https://nextash.com](https://nextash.com)
